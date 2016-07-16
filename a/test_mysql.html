@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Test data from MySQL database - Multiple Drop-Down Select Lists Creator</title>
+<meta name="description" content="Test data from MySQL database - Multiple Drop-Down Select Lists Creator script, Ajax,PHP-MySQL, from CoursesWeb.net" />
+<meta name="keywords" content="Drop-Down select, create select lists, Drop-Down select creator, multiple select lists" />
+<meta name="robots" content="ALL" />
+<meta name="author" content="CoursesWeb.net" />
+<style>
+body, html {
+ margin: 0;
+ padding: .2em;
+ background-color: #fbfbfe;
+ text-align: center;
+}
+.dslists select {
+ background: #fefeda;
+ font-weight: 800;
+ padding: 1px;
+}
+#optioncnt{
+ position: relative;
+ min-width: 65%;
+ margin: 1em 2em;
+ background-color: #e8fee9;
+ padding: .2em;
+}
+</style>
+</head>
+<body>
+<h1>Test data from MySQL database - Multiple Drop-Down Select Lists Creator</h1>
+ - Options data stored in MySQL database.<br/>
+ - You need to have a table (named "slists") in MySQL database with the Dropdown-Select-Lists data.<br/>
+ - For connection to MySQL database, add your data in "setslists.php" file (in "setslists/" folder).<br/><br/>
+
+<form action="#" method="post">
+ <span id="n_sl1" class="dslists"></span>
+ <pre id="optioncnt"></pre>
+</form>
+
+<script type="text/javascript" src="setslists/getslists.js"></script>
+<script type="text/javascript">
+// "slists" is the name of the table in which the Select-Lists data are saved
+obGSL.add1stSelect('mysql', 'slists');     // calls the function that adds 1st Select Lists
+</script>
+
+<br/><br/>
+<sup><a href="http://coursesweb.net/" title="Web programming and development courses">CoursesWeb.net</a></sup>
+</body>
+</html>

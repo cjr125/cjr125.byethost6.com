@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#btn_submit").on("click", function() {
+			document.forms[0].submit();
+		});
+	});
+</script>
+</head>
+<body>
+<form id="form1" action="#" method="post">
+	<input type="button" id="btn_submit" name="btn_submit" value="Submit">
+</form>
+</body>
+</html>

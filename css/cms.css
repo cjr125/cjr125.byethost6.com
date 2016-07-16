@@ -1,0 +1,30 @@
+body {
+background-image:none;
+text-align:left;
+}
+input[type="text"],input[type="password"] {
+width:140px;
+}
+span {
+display:inline-block;
+text-align:left;
+width:80px;
+}
+.ui-datepicker span.ui-icon {
+background-image:none;
+padding-right:20px;
+display:inline;
+width:auto;
+}
+.editable {
+color:grey;
+width:100px;
+}
+.error {
+width:350px;
+color:red;
+}
+input[type="text"].tb_date,label.lbl_date {
+display:inline-block;
+width:120px;
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+<title>Multiple Drop-Down Select Lists Creator</title>
+<style type="text/css">
+pre {background:#fafbfe;margin:8px 10px 8px 25px; font-weight:800; font-size:16px; color:#0001da;}
+.sb {font-weight:800;}
+.sbi {font-weight:800; font-style:italic;}
+.sbu {font-weight:800; text-decoration:underline;}
+</style>
+</head>
+<body>
+<center><h2>Multiple Drop-Down Select Lists Creator</h2>
+<sup>from <a href="http://coursesweb.net/javascript/">coursesweb.net</a></sup></center><br />
+This is an <strong>Ajax Script to create Multiple Drop-Down Select Lists</strong>.<br/>
+The Select lists are created with JavaScript, then, the code structure of the Drop-Down Select Lists (options, values) can be saved with PHP in TXT file (in JSON format) and /or in MySQL database.<br/>
+ &bull; <span class="sbi">The script is free, without any support or assistance. You can use it, modify, and publish it freely.</span>
+<h4>Features</h4>
+ - This Multiple Drop-Down Select Lists Creator has Administration page to Add options in &lt;select&gt; lists, Modify options data, Delete lists, Save and Load saved Select Lists.<br/>
+ - Each Option can have an additional content that is displayed into a separated HTML element (under the Select lists).<br/>
+ - The script generates and displays the HTML and JavaScript code that can be used to include the Select Lists in your web page; also, the JSON and SQL code, if you want to save the Drop-Down Lists manually in TXT file or MySQL database.<br/>
+ - You can load a saved Drop-Down Select Lists to continue editing it, to add and modify options.
+<h4 class="sbu">Installation and Settings</h4>
+1. Open the "<span class="sb">setslists.php</span>" file (in "setslists" directory) and add your data for Admin; Name and Password to these constants (they are required when you want to save the Drop-Down Select Lists):
+<pre>
+define('ADMNAME', 'name');
+define('ADMPASS', 'password');
+</pre>
+<div style="background:#eeeffe;padding:3px;">
+- If you want to save data in MySQL database, <span class="sbu">the PHP server must support PDO for connection to MySQL</span>.<br/>
+Edit the following data in the "<span class="sb">setslists.php</span>" file:
+<pre>
+define('DBHOST', 'localhost');            - replace <span class="sb">localhost</span> with your MySQL server address
+define('DBUSER', 'root');                 - replace <span class="sb">root</span> with your database user name
+define('DBPASS', 'passdb');               - replace <span class="sb">passdb</span> with your password for MySQL database
+define('DBNAME', 'dbname');               - replace <span class="sb">dbname</span> with the name of your MySQL database
+</pre>
+</div><br/>
+2. Copy on your server the directories: "<span class="sb">setslists</span>", and "<span class="sb">slists</span>" (with all their files), and the "<span class="sb">create_select_lists.html</span>" file.<br /><br/>
+3. The "<span class="sb">slists</span>" directory is necesary only if you want to save the Option Lists data in TXT files.<br/>
+In this case you must set <span class="sbi">read-write-execute permissions</span> to this folder and its ".txt" files, CHMOD 0777 (or 0755) so the PHP can write data in these files.<br/><br/>
+4. Open the "<span class="sb">create_select_lists.html</span>" page in your browser. For example, in your browser access this address ("localhost" is the domain name).
+<ul><li class="sbi">http://localhost/create_select_lists.html</li></ul>
+Then you can start to build your DropDown-Select-Lists.<br/><br/>
+ - To get /load a saved Dropdown-Lists for editing it, click on the "<span class="sb">Get Saved Select Lists</span>" tab.<br/>
+ - From the "<span class="sb">Get Code</span>" section you can copy the HTML, JSON, and SQL codes of your Dropdown-Select-Lists.<br/><br/>
+&bull; For test, the script contains a Dropdown-Select-Lists saved in "<span class="sbi">slists.txt</span>" file (in the "slists/" folder), you can use it to see how the script works, with the files for test: "<span class="sbi">test_mysql.html</span>", and "<span class="sbi">test_txt.html</span>".<br/>
+Also, you can test it online on the page: <a href="http://coursesweb.net/scripts/select_lists_creator/create_select_lists.html" title="Demo Multiple Drop-Down Select Lists Creator">Demo Multiple Dropdown-Select-Lists Creator</a>
+<h4 class="sbu">Advanced Usage</h4>
+ - The &lt;select&gt; lists are added with JavaScript in &lt;span&gt; elements with <span class="sb">class="dslists"</span>. This class can be used in CSS to style de &lt;select&gt; items in your web page (for example, see the CSS code in pages for test).<br/><br/>
+ - Each &lt;select&gt; element has <span class="sb">name="dslists[]"</span> attribute, that can be used in PHP scripts to get selected value. If you add the Select-Lists into a &lt;form&gt; that sends data to a PHP script, you can use the "dslists" name to get the values of selected options.<br/>
+ <span class="sbi">$_POST['dslists'][0]</span> contains the value of selected option in first select-list, <span class="sbi">$_POST['dslists'][1]</span> contains the value of selected option in second select-list, and so on.<br/>
+ For example, this code outputs the values of the options selected in "dslists" items.
+<pre>
+if(isset($_POST['dslists'])) {
+  $nrdsl = count($_POST['dslists']);     // number of 'dslists' items
+  for($i=0; $i&lt;nrdsl; $i++) {
+    echo '&lt;br/&gt;'. $_POST['dslists'][$i];
+  }
+}
+</pre><br/>
+ - The value of each &lt;option&gt; contains the ID of that option and String value you added for that option, separated by "_", for example: <span class="sb">value="3_text-string"</span>.<br/>
+ If you want to separate the ID and text-string value in PHP script, apply <span class="sb">explode()</span> function, like in this example.
+<pre>
+if(isset($_POST['dslists'])) {
+  $nrdsl = count($_POST['dslists']);     // number of 'dslists' items
+
+  // outputs the ID and String value of each selected option
+  for($i=0; $i&lt;nrdsl; $i++) {
+    $id_val = explode($_POST['dslists'][$i], 2);       // gets separated ID and text-string
+
+    // $id_val[0] contains the ID, $id_val[1] contains the text-string
+    echo '&lt;br/&gt;ID = '. $id_val[0] .' / Text = '. $id_val[1];
+  }
+}
+</pre><br/>
+<h4 class="sbu">Other details</h4>
+ - The code with data and structure of the Select-Lists are processed in JavaScript from two objects:<br/>
+<span class="sb">optHierarchy</span> - contains an object /array with <span class="sbi">{parent_id: [childs-IDs]}</span> (to each option that has sub-options it is associated an array with the IDs of its sub-options, separated by comma).<br/>
+<span class="sb">optData</span> - contains an object with data of the option lists (value, content, parent): <span class="sbi">{option_id:{'value':'text-value', 'content':'additional-option-content', 'parent':'parent_id'}}</span><br/>
+These two objects are saved in JSON format in TXT files.<br/><br/>
+ - In MySQL table, the Options data are stored in these columns corresponding with the indexs of the "optData" object:<br/> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+ <span class="sb">id - 'value' - 'content' - 'parent'</span><br/>
+ The PHP script selects data from MySQL table, creates the two objects/ arrays specified above, then sends them to Ajax in JSON format.<hr/><br/>
+- The script was succesfully tested in Mozila Firefox, Google Chrome, Internet Explorer 8, and Opera browsers.<br/><br/>
+<i>With respect,
+CoursesWeb.net</i>
+<br/>
+</body>
+</html>

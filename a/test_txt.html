@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Test data from TXT file - Multiple Drop-Down Select Lists Creator</title>
+<meta name="description" content="Test data from TXT file - Multiple Drop-Down Select Lists Creator script, Ajax,PHP-MySQL, from CoursesWeb.net" />
+<meta name="keywords" content="Drop-Down select, create select lists, dropdown select creator, multiple select lists" />
+<meta name="robots" content="ALL" />
+<meta name="author" content="CoursesWeb.net" />
+<style>
+body, html {
+ margin: 0;
+ padding: .2em;
+ background-color: #fbfbfe;
+ text-align: center;
+}
+.dslists {
+ display: block;
+ margin:.4em auto;
+}
+.dslists select {
+ background: #fefeda;
+ font-weight: 800;
+ padding: 1px;
+}
+#optioncnt{
+ position: relative;
+ min-width: 65%;
+ margin: 1em 2em;
+ background-color: #e8fee9;
+ padding: .2em;
+}
+</style>
+</head>
+<body>
+<h1>Test data from TXT file - Multiple Drop-Down Select Lists Creator</h1>
+ - Options data stored in JSON format in TXT file.<br/><br/>
+
+<form action="#" method="post">
+ <span id="n_sl1" class="dslists"></span>
+ <pre id="optioncnt"></pre>
+</form>
+
+<script type="text/javascript" src="setslists/getslists.js"></script>
+<script type="text/javascript">
+obGSL.add1stSelect('file', 'slists/slists.txt');     // calls the function that adds 1st Select Lists
+</script>
+
+<br/><br/>
+<sup><a href="http://coursesweb.net/" title="Web programming and development courses">CoursesWeb.net</a></sup>
+</body>
+</html>

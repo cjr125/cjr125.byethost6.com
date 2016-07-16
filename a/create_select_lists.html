@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Multiple Drop-Down Select Lists Creator</title>
+<meta name="description" content="Multiple Drop-Down Select Lists Creator script, Ajax,PHP-MySQL, from CoursesWeb.net" />
+<meta name="keywords" content="Drop-Down select, create select lists, dropdown select creator, multiple select lists" />
+<meta name="robots" content="ALL" />
+<meta name="author" content="CoursesWeb.net" />
+<link href="setslists/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>Multiple Drop-Down Select Lists Creator</h1>
+
+<ul id="ultabs">
+ <li id="tabgets">Get Saved Select Lists</li>
+ <li id="tabsets" class="tabvi">Set Select Lists</li>
+ <li id="tabcodes">Get Code</li>
+</ul>
+
+<div id="gets">
+ <h3>Get Saved Select Lists</h3><br/>
+ <strong><em>From</em>:</strong> <label for="getxt"><input type="radio" name="geto" id="getxt" value="txt" checked="checked" />TXT file</label>
+ <label for="getmysql"><input type="radio" name="geto" id="getmysql" value="mysql" />MySQL database</label><br/>
+ <form action="#" method="post" id="fgets">
+  <span>The name of the TXT file (without extension), or MySQL table in which a Dropdown-Select-Lists is saved.</span><br/>
+ Resource Name: <input type="text" name="getslists" id="getslists" maxlength="250" value="" /><br/>
+  <input type="button" id="btnget" value="Load Select Lists" />
+ </form>
+</div>
+
+<div id="sets">
+ <h3>Set Drop-Down Select Lists</h3>
+ <div id="slists">
+  <em>Select to set Options in Drop-Down lists.</em><br/>
+  <div><strong id="sl0">Root:</strong></div> <div><span id="n_sl1"></span></div>
+  <div id="optioncnt"></div>
+  <br style="clear:both" />
+ </div>
+ <form action="#" method="post" id="fset">
+  <h4>Add /Edit Options data</h4>
+  <span class="sbi">Option:</span> <input type="text" name="opval" id="opval" maxlength="250" size="25" /><br/>
+  <span class="sbi">(Optional)</span> - <span class="sb">Content for this Option</span><br/>
+  <textarea name="opcnt" id="opcnt" cols="33" rows="4"></textarea><br/>
+  <input type="button" id="newopt" value="Add New Option" /><br/>
+  IN: <span id="curentitem">Root</span><hr/>
+  <input type="button" id="chgdata" value="Change Data" /> &nbsp;
+  <input type="button" id="delopt" value="Delete Option" />
+ </form>
+ <form action="#" method="post" id="savedata">
+  <h4>Save Drop-Down Lists</h4>
+  <strong><em>In</em>:</strong> <label for="totxt"><input type="radio" name="saveto" id="totxt" value="txt" checked="checked" />TXT File</label>
+ <label for="tomysql"><input type="radio" name="saveto" id="tomysql" value="mysql" />MySQL Database</label>
+ <label for="totxtmysql"><input type="radio" name="saveto" id="totxtmysql" value="txtmysql" />TXT and MySQL</label><br/>
+ <div id="savename">
+   <sub>(Name of the TXT file, or MySQL table in which data will be saved)</sub><br/>
+  <strong><em>Resource Name</em>:</strong> <input type="text" name="resname" id="resname" maxlength="250" /><br/>
+  <sup>- If the resource already exists, data will be replaced -</sup>
+ </div>
+ <div id="adm">
+  <em>Here add the name and password set in "setslists.php"</em><br/>
+  Admin Name: &nbsp; &nbsp;&nbsp; <input type="text" name="admname" id="admname" maxlength="250" /><br/>
+  Admin Password: <input type="password" name="admpass" id="admpass" maxlength="250" />
+ </div>
+  <input type="button" id="btnsave" value="Save" />
+ </form>
+ <br style="clear:both;" />
+</div>
+
+<div id="codes">
+ <h3>Get Code</h3>
+ <ul id="codetabs">
+  <li id="tabchtml" class="tabvi">Installation</li>
+  <li id="tabcjson">JSON Code</li>
+  <li id="tabcsql">SQL Code</li>
+ </ul>
+ <div id="chtml">
+  <h4>&bull; Select-Lists data directly in web page</h4>
+  <div id="allcodeinpg">
+  <p> - To includ the Select Lists directly in web page (<span class="sbi">without need of this script, and without saving options data in external resource</span>), just Copy and add this code in your HTML document, where you want to display the Drop-Down Select Lists.</p>
+  <textarea id="dslinpage" rows="18" cols="50">&lt;form action=&quot;#&quot; method=&quot;post&quot;&gt;
+&lt;span id=&quot;n_sl1&quot; class="dslists"&gt;&lt;/span&gt;
+&lt;div id=&quot;optioncnt&quot;&gt;&lt;/div&gt;
+&lt;/form&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+// &lt;![CDATA[
+var GetSLists=function(){var thisob=this;var optHierarchy={'0':[]};var optData={'0':{'value':'Root','content':'','parent':-1}};var opt1=1;var optID=0;var slevel=1;var selID='sl1';this.add1stSelect=function(from,resource){optID=0;slevel=1;if(from==0){optHierarchy=resource[0];optData=resource[1];if(optHierarchy[0].length&gt;0)document.getElementById('n_sl1').innerHTML=getSelect(optHierarchy[0]);}
+else if(from=='file')getSlistsTxt(resource);else if(from=='mysql'){tableMysql=resource;getSlistsMysql();}}
+var getSelect=function(options){var arrowsign=(slevel&gt;1)?' -&amp;gt; ':'';var slist=arrowsign+'&lt;select onchange=&quot;obGSL.addSubSelect(this)&quot; id=&quot;sl'+slevel+'&quot; name=&quot;dslists[]&quot;&gt;&lt;option value=&quot;'+optID+'_'+'&quot;&gt;---&lt;/option&gt;';var nrarsubctg=options.length
+for(var i in options){if(optData[options[i]])slist+='&lt;option value=&quot;'+options[i]+'_'+optData[options[i]].value+'&quot;&gt;'+optData[options[i]].value+'&lt;/option&gt;';}
+return slist+'&lt;/select&gt; &lt;span id=&quot;n_sl'+(slevel+1)+'&quot; class=&quot;dslists&quot;&gt;&lt;/span&gt;';}
+this.addSubSelect=function(slist){selID=slist.id;slevel=1+selID.match(/[0-9]+/)*1;var opid_lvl=slist.value.split('_');optID=opid_lvl[0]*1;if(slist.value.match(/^[0-9]+_$/))opt1=1;else opt1=0;document.getElementById('n_sl'+slevel).innerHTML='';document.getElementById('optioncnt').innerHTML='';if(opt1==0&amp;&amp;optHierarchy[optID]&amp;&amp;optHierarchy[optID].length&gt;0){document.getElementById('n_sl'+slevel).innerHTML=getSelect(optHierarchy[optID]);}
+if(opt1==0&amp;&amp;optData[optID]){document.getElementById('optioncnt').innerHTML=optData[optID].content;}
+else document.getElementById('optioncnt').innerHTML='';}}
+var obGSL = new GetSLists();
+var sliststr = [{},[]];  //op_data
+
+obGSL.add1stSelect(0, sliststr);
+// ]]&gt;
+&lt;/script&gt;</textarea>
+  </div>
+  <h4 class="sbu">&bull; Installing the Select Lists saved in TXT file, or MySQL database</h4>
+<p>Your page must be in the same directory in which the "<span class="sbi">setslists/</span>" folder of this script is added, because, to display the saved Select lists in your web page, it is required the JavaScript code from "<span class="sbi">getslists.js</span>" file (in "setslists/" directory), and one of the codes presented bellow.<br/> &nbsp;
+  - <em>Don't change the <span class="sb">id="n_sl1"</span> and  <span class="sb">id="optioncnt"</span>. In "n_sl1" JavaScript adds the &lt;select&gt; lists, and in "optioncnt" it is displayed the content of selected option, under the &lt;select&gt; lists (you can move it if you want to display the option-content in other place in page).</em></p><br/>
+  <div id="fromtxtmysql">
+   <h5>Select-Lists data from TXT file</h5>
+  <p> - If you want to use Dropdown-Select-Lists data saved into a TXT file on server (in "<span class="sb">slists</span>" directory), add this code in you web-page (see example in "<span class="sbi">test_txt.html</span>" file).<br/>
+  - <em>"<span class="sb">file_name</span>" is the neme of the TXT file in which the JSON code with Drop-Down Select Lists is saved. Don't change the "<span class="sb">file</span>" argument value.</em>.</p>
+  <textarea id="dslintxt" rows="9" cols="50" readonly>&lt;form action=&quot;#&quot; method=&quot;post&quot;&gt;
+&lt;span id=&quot;n_sl1&quot; class="dslists"&gt;&lt;/span&gt;
+&lt;div id=&quot;optioncnt&quot;&gt;&lt;/div&gt;
+&lt;/form&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;setslists/getslists.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+obGSL.add1stSelect('file', 'slists/file_name.txt');
+&lt;/script&gt;</textarea><hr/><br/>
+   <h5>Options data from MySQL table</h5>
+ <p> - If you want to use Option-Lists data saved into a table in MySQL database, add this code in your web-page (see example in "<span class="sbi">test_mysql.html</span>" file).<br/>
+ - <em>"<span class="sb">table_name</span>" is the neme of the MySQL table in which the Drop-Down Select Lists data are saved. Don't change the "<span class="sb">mysql</span>" argument value.</em></p>
+  <textarea id="dslinmysql" rows="9" cols="50" readonly>&lt;form action=&quot;#&quot; method=&quot;post&quot;&gt;
+&lt;span id=&quot;n_sl1&quot; class="dslists"&gt;&lt;/span&gt;
+&lt;div id=&quot;optioncnt&quot;&gt;&lt;/div&gt;
+&lt;/form&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;setslists/getslists.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+obGSL.add1stSelect('mysql', 'table_name');
+&lt;/script&gt;</textarea>
+</div>
+ </div>
+ <div id="cjson">
+  <h4>JSON Code</h4>
+  <p>- If you want to store the Option-Lists data into a text file on server, copy this code and save it into a ".txt" file in "<strong>slists</strong>" directory.</p>
+  <textarea id="jsoncode" rows="15" cols="50"></textarea>
+ </div>
+ <div id="csql">
+  <h4>SQL Code</h4>
+  <p>- This code can be used to create a table with the Option-Lists data in your database. For example, directly from PHPMyAdmin.<br/> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  <em>Replace "table_name" with the name you want for that table.</em></p>
+  <textarea id="sqlcode" rows="15" cols="50"></textarea>
+ </div>
+</div>
+
+<br/><br/>
+<sup><a href="http://coursesweb.net/" title="Web programming and development courses">CoursesWeb.net</a></sup>
+<script type="text/javascript" src="setslists/setslists.js"></script>
+</body>
+</html>

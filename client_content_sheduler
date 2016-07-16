@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<?php require 'db.php';
+  $user = $_COOKIE["user"];
+  $error = "";
+  $client_id = $_GET["client_id"];
+  $start_date = new DateTime("0000-00-00 00:00:00");
+  $end_date = new DateTime("0000-00-00 00:00:00");
+  $selected_content_spots = "";
+
+  if (isset($_POST["hf_start_date"]) && $_POST["hf_start_date"] != "") {
+    $start_date = $_POST["hf_start_date"];
+  }
+  if (isset($_POST["hf_end_date"]) && $_POST["hf_end_date"] != "") {
+    $end_date = $_POST["hf_end_date"];
+  }
+  if (isset($_POST["hf_selected_content_spots"]) && $_POST["hf_selected_content_spots"] != "") {
+    $selected_content_spots = $_POST["hf_content_spots"];
+  }
+  if (isset($_POST["btn_submit"])) {
+    if ($selected_content_spots != "" && $start_date != new DateTime("0000-00-00 00:00:00") && $end_date != new DateTime("0000-00-00 00:00:00")) {
+      DBLogin("a8823305_audio");
+      $selected_content_spot_hashes = explode(",", $selected_content_spots);
+      foreach ($selected_content_spot_hashes as $selected_content_spot_hash) {
+        $selected_content_spot_hash = explode(":", $selected_content_spot_hash);
+        $content_spot_id = intval($selected_content_spot_hash[1]);
+        $content_id = intval($selected_content_spot_hash[2]);
+        DBQuery("INSERT INTO client_content_schedules (client_id,content_spot_id,content_id) VALUES (".$client_id.",".$content_spot_id.",".$content_id.")");
+      }
+      DBC();
+    }
+  }
+?>
+<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#tb_start_date").change(function() {
+      $("#hf_start_date").val($("#tb_start_date").val());
+      $("#form1").submit();
+    });
+    $("#tb_end_date").change(function() {
+      $("#hf_end_date").val($("#tb_end_date").val());
+      $("#form1").submit();
+    });
+    $("#btn_submit").on("click", function() {
+      $("#hf_start_date").val($("#tb_start_date").val());
+      $("#hf_end_date").val($("#tb_end_date").val());
+      var selected_content_hashes = "";
+      for (var i = 0; i < $(".contentId").length; i++) {
+        selected_content_hashes += (selected_content_hashes == "" ? $(".contentSpotId")[i].innerHtml() + ":" + $(".contentId")[i].innerHtml() : "," + $(".contentSpotId")[i].innerHtml() + ":" + $(".contentId")[i].innerHtml());
+      }
+      $("#hf_selected_content_spots").val(selected_content_hashes);
+      $("#form1").submit();
+    });
+  });
+</script>
+</head>
+<body>
+<?php
+  include("class_calendar.php"); 
+  $isPostBack = false;
+  $referer = "";
+  $thisPage = "http://".$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+  if (isset($_SERVER['HTTP_REFERER'])) {
+    $referer = substr($_SERVER['HTTP_REFERER'],0,strpos($_SERVER['HTTP_REFERER'], "?"));
+  }
+  if ($referer == $thisPage) {
+    $isPostBack = true;
+  } 
+  // Make objects 
+  $Cal = array(new Calendar("caltest.php"), new Calendar("caltest.php"));    // set page-name 
+  if (!$isPostBack) {
+    $Cal[0]->Day = date("d");            // example - set current date 
+    $Cal[0]->Month = date("m"); 
+    $Cal[0]->Year = date("Y");
+    $Cal[1]->Day = date("d");            // example - set current date 
+    $Cal[1]->Month = date("m"); 
+    $Cal[1]->Year = date("Y");
+  }
+  else {
+    $Cal[0]->Day = $_GET['StartDateChosenDay'];
+    $Cal[0]->Month = $_GET['StartDateChosenMonth'];
+    $Cal[0]->Year = $_GET['StartDateChosenYear'];
+    $Cal[1]->Day = $_GET['EndDateChosenDay'];
+    $Cal[1]->Month = $_GET['EndDateChosenMonth'];
+    $Cal[1]->Year = $_GET['EndDateChosenYear'];
+  }
+  if (logged_in()) {
+    echo "Logged in as ".$_COOKIE["user"]." <a href=\"logout.php\">Logout</a><br>\n";
+    include 'menu_bar.php';
+    if ($error != "") {
+      echo "<span class='error'>".$error."</span><br>\n";
+    }
+    echo "<form id='form1' name='form1' action='client_content_schedule.php' method='post'>\n";
+    echo "<table id='tbl_input_params'>\n";
+    echo "<tr><th>start date</th><th>end date</th><th></th></tr>\n";
+    echo "<tr><td>".$Cal[0]->Show()."</td><td>".$Cal[1]->Show()."</td><td></td></tr>\n";
+    echo "</table>\n";
+    echo "<table id='tbl_client_content_schedule'>\n";
+    echo "<tr><th>client name</th><th>content spot name</th><th>category</th><th>content name</th><th>selected</th></tr>\n";
+    $client_content_schedule = getClientContentSchedule(new DateTime($_GET['StartDateChosenYear']."-".$_GET['StartDateChosenMonth']."-".$_GET['StartDateChosenDay']), new DateTime($_GET['EndDateChosenYear']."-".$_GET['EndDateChosenMonth']."-".$_GET['EndDateChosenDay']));
+    foreach ($client_content_schedule as $client_content_schedule_row) {
+      $client_name = $client_content_schedule["client_name"];
+      $content_spot_id = $client_content_schedule["content_spot_id"];
+      $content_spot_name = $client_content_schedule["content_spot_name"];
+      $category = $client_content_schedule["category"];
+      $content_name = $client_content_schedule["content_name"];
+      $selected = $client_content_schedule["selected"];
+      echo "<tr><td>".$client_name."</td><td style='display:none;' class='.contentSpotId'>".$content_spot_id."</td><td>".$content_spot_name."</td><td>".$category."</td><td>".$content_name."</td><td><input type='checkbox' id='cb_selected' name='cb_selected' checked='".($selected ? "checked" : "unchecked")."' /></td></tr>\n";
+    }
+    echo "<tr><td colspan='4'></td><td><input type='button' id='btn_submit' name='btn_submit' value='Submit' /></td></tr>\n";
+    echo "</table>\n";
+    echo "<input type='hidden' id='hf_start_date' name='hf_start_date' value='' />\n";
+    echo "<input type='hidden' id='hf_end_date' name='hf_end_date' value='' />\n";
+    echo "<input type='hidden' id='hf_selected_content_spots' name='hf_selected_content_spots' value='' />\n";
+    echo "</form>\n";
+  } else {
+    header("Location: cms.php");
+  }
+  function getClientContentSchedule($client_id, $start_date, $end_date) {
+    $client_content_schedule = array();
+    DBLogin("a8823305_audio");
+    $result = DBQuery("SELECT * FROM client_content_schedule WHERE Date BETWEEN '".$start_date."' AND '".$end_date."' AND client_id = ".$client_id);
+    if ($result->num_rows == 0) {
+      echo "No rows found.";
+      exit;
+    }
+    while ($row = $result->fetch_array(MYSQL_ASSOC)) {
+      $client_content_schedule[] = $row;
+    }
+    DBC();
+    return $client_content_schedule;
+  }
+?>
+</body>
+</html>

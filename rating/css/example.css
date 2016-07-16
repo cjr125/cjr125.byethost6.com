@@ -1,0 +1,45 @@
+.clear{clear: both;}
+
+hr{ margin: 10px 0; border:none; border-top: #ccc 1px dotted;}
+
+/*  First Example with big stars */
+.rate-ex-cnt{
+        position:relative;
+        top:-30px;
+        left:570px;
+	width:82px; height: 16px;
+	border:#000 1px solid;
+	background-color:  #000;
+        z-index:-1;
+}
+.rate-ex-cnt .rate-btn{
+	width: 16px; height:16px;
+	float: left;
+	background: url(../img/rate-btn.png) no-repeat;
+	cursor: pointer;
+}
+.rate-ex-cnt .rate-btn:hover, .rate-ex-cnt  .rate-btn-hover, .rate-ex-cnt  .rate-btn-active{
+	background: url(../img/rate-btn-hover.png) no-repeat;
+}
+/* End first Example with big stars */
+
+/* rate result */
+.rate-result-cnt{
+	width: 82px; height: 18px;
+	position: relative;
+        top:-50px;
+        left:570px;
+	background-color: #ccc;
+	border: #000 1px solid;
+}
+.rate-stars{
+	width: 82px; height: 18px;
+	background: url(../img/rate-stars.png) no-repeat;
+	position: absolute;
+}
+.rate-bg{
+	height: 18px;
+	background-color: #ffbe10;
+	position: absolute;
+}
+
