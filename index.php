@@ -238,7 +238,6 @@
       <img src="http://www.cjr125.netai.net/images/default.jpg" width="160" height="25" border="0" alt="View Chris Roberts's profile on LinkedIn"> 
     </a>
     <br>
-    <a href="http://www.000webhost.com/" target="_blank"><img src="http://www.000webhost.com/images/80x15_powered.gif" alt="Web Hosting" width="80" height="15" border="0" /></a>
     <!--<script type="text/javascript" src="js/ad.js"></script>-->
     <div style="display:none;">
     <!-- START OF HIT COUNTER CODE -->
