@@ -76,7 +76,6 @@
 	}
         #pager {
           width:100%;
-          padding: 0 3%;
           clear:both;
         }
         #pager, #pager li {
