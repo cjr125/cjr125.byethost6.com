@@ -234,7 +234,7 @@
       ?>
     </ul>
     <a href="http://www.linkedin.com/in/chrisroberts7">
-      <img src="http://www.cjr125.netai.net/images/default.jpg" width="160" height="25" border="0" alt="View Chris Roberts's profile on LinkedIn"> 
+      <img src="http://www.cjr125.byethost6.com/images/default.jpg" width="160" height="25" border="0" alt="View Chris Roberts's profile on LinkedIn"> 
     </a>
     <br>
     <!--<script type="text/javascript" src="js/ad.js"></script>-->
