@@ -204,7 +204,7 @@
 	      $rate_value = 0;
 	      $rate_bg = 0;
 	    }
-	    echo '<li><span class="trackName"'.($currentPageTracks == 0 ? ' style="padding-left:80px;"' : '').'>'.$name.'</span><audio controls="controls"><source src="'.$file.'" type="audio/mpeg" /></audio>
+	    echo '<li><span class="trackName"'.($currentPageTracks == 0 ? ' style="padding-left:80px;"' : '').'>'.$name.'</span><audio '.($currentPageTracks == 0 ? 'style="padding-left:1px;" ' : '').'controls="controls"><source src="'.$file.'" type="audio/mpeg" /></audio>
 	        <div class="rate-ex-cnt">
 		  <div id="1" class="rate-btn-1 rate-btn"></div>
 		  <div id="2" class="rate-btn-2 rate-btn"></div>
