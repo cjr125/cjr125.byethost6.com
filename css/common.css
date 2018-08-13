@@ -37,7 +37,9 @@ display:inline-block;
 width:170px;
 }
 span.trackName {
-padding-right:10px;
+vertical-align: top;
+padding-right: 10px;
+padding-top: 18px;
 }
 .container {
 width:750px;
