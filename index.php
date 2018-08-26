@@ -192,9 +192,10 @@
         $currentPageTracks = 0;
         $sql = 'SELECT SQL_CALC_FOUND_ROWS m.*, AVG(r.rating) as rating FROM cjrmusic m LEFT OUTER JOIN ratings r ON r.id_post = m.title GROUP BY m.title ORDER BY rating DESC, m.title ASC LIMIT '.$lowerBound.', '.$pageSize;
         $trackListResult = DBQuery($sql);
-        $totalTracks = mysql_fetch_assoc(DBQuery('SELECT FOUND_ROWS() as total'));
+        $totalTracks = mysqli_fetch_assoc(DBQuery('SELECT FOUND_ROWS() as total'));
         $totalTracks = $totalTracks ? $totalTracks['total'] : 0;
-        while ($trackResult = mysql_fetch_assoc($trackListResult)) {
+        $iPhone  = stripos($_SERVER['HTTP_USER_AGENT'],"iPhone");
+        while ($trackResult = mysqli_fetch_assoc($trackListResult)) {
 	    $file = $trackResult['location'];
             $name = $trackResult['title'];
 	    if ($trackResult['rating']) {
@@ -204,7 +205,7 @@
 	      $rate_value = 0;
 	      $rate_bg = 0;
 	    }
-	    echo '<li><span class="trackName"'.($currentPageTracks == 0 ? ' style="padding-left:80px;"' : '').'>'.$name.'</span><audio '.($currentPageTracks == 0 ? 'style="padding-left:1px;" ' : '').'controls="controls"><source src="'.$file.'" type="audio/mpeg" /></audio>
+	    echo '<li><span class="trackName"'.(($currentPageTracks == 0 && !$iPhone) ? ' style="padding-left:80px;"' : '').'>'.$name.'</span><audio '.($currentPageTracks == 0 ? 'style="padding-left:1px;" ' : '').'controls="controls"><source src="'.$file.'" type="audio/mpeg" /></audio>
 	        <div class="rate-ex-cnt">
 		  <div id="1" class="rate-btn-1 rate-btn"></div>
 		  <div id="2" class="rate-btn-2 rate-btn"></div>
@@ -239,9 +240,6 @@
     <br>
     <!--<script type="text/javascript" src="js/ad.js"></script>-->
     <div style="display:none;">
-    <!-- START OF HIT COUNTER CODE -->
-    <br><script language="JavaScript" src="http://www.counter160.com/js.js?img=11"></script><br><a href="http://www.000webhost.com"><img src="http://www.counter160.com/images/11/left.png" alt="free web hosting" border="0" align="texttop"></a><a href="http://www.hosting24.com"><img alt="Hosting24.com web hosting" src="http://www.counter160.com/images/11/right.png" border="0" align="texttop"></a>
-    <!-- END OF HIT COUNTER CODE -->
     <!-- Google Code for music home impression Conversion Page -->
     <script type="text/javascript">
     /* <![CDATA[ */
@@ -273,4 +271,3 @@ ga('send', 'pageview');
   </div>
 </body>	
 </html>
-		
