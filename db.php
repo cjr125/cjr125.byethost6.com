@@ -5,14 +5,14 @@
     $connection = $_SESSION['connection'];
   }
   function DBLogin($db_name) {
-    $host = "mysql13.000webhost.com";
-    $user = "a8823305_cjr125";
-    $password = "________";
-    $connection = mysql_connect($host, $user, $password);
+    $host = "localhost";
+    $user = "root";
+    $password = "";
+    $connection = mysqli_connect($host, $user, $password);
     if (!$connection) {
-      die('Not connected: '.mysql_error());
+      die('Not connected: '.mysqli_error($connection));
     }
-    $db = mysql_select_db($db_name);
+    $db = mysqli_select_db($connection, $db_name);
     $_SESSION['connection'] = $connection;
     $_COOKIE['user'] = $user;
     $_COOKIE['passwd'] = $password;
@@ -24,9 +24,9 @@
     if (!$connection) {
       die('Error - Unable to connect to database');
     }
-    $result = mysql_query($qry, $connection);
+    $result = mysqli_query($connection, $qry);
     if (!$result) {
-      die('Error: '.mysql_error());
+      die('Error: '.mysqli_error($connection));
     }
     return $result;
   }
@@ -34,17 +34,17 @@
     if ($_SESSION['connection'] && $_SESSION['connection'] != "") {
       $connection = $_SESSION['connection'];
     }
-    mysql_close($connection); 
+    mysqli_close($connection); 
   }
   function mysql_evaluate($query, $default_value="undefined") {
-    $result = mysql_query($query);
+    $result = mysqli_query($connection, $query);
     if (mysql_num_rows($result)==0)
         return $default_value;
     else
         return mysql_result($result,0);
   }
   function mysql_evaluate_array($query) {
-    $result = mysql_query($query);
+    $result = mysqli_query($connection, $query);
     $values = array();
     for ($i=0; $i<mysql_num_rows($result); ++$i)
         array_push($values, mysql_result($result,$i));
@@ -59,9 +59,9 @@
       return false; 
     }
     else {
-      DBLogin("a8823305_audio");
+      DBLogin("b6_17569910_audio");
       $qry = "SELECT username,password FROM users WHERE username = '".$_COOKIE["user"]."'";
-      $result = DBQuery($qry) or die("Invalid query: ".mysql_error());
+      $result = DBQuery($qry) or die("Invalid query: ".mysqli_error($connection));
       if (mysql_num_rows($result) > 0) {
         $result = mysql_fetch_row($result);
         $db_password = $result["password"];
@@ -82,5 +82,3 @@
     }
   }
 ?>
-
-
